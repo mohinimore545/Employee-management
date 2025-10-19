@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: REPLACE_WITH_FRONTEND_IMAGE
+        image: 024848473432.dkr.ecr.ap-south-1.amazonaws.com/employee-management-frontend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
