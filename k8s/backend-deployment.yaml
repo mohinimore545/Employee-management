@@ -21,20 +21,15 @@ spec:
         - name: DB_HOST
           value: postgres.employee-app.svc.cluster.local
         - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: POSTGRES_USER
+
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: postgres-secret
               key: POSTGRES_PASSWORD
         - name: DB_NAME
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: POSTGRES_DB
+          value: "Emp-mang-db"
+ 
         - name: DB_PORT
           value: "5432"
         - name: ALLOWED_ORIGINS
