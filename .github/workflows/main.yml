@@ -71,4 +71,14 @@ jobs:
         port: 22
         script: |
           tar xzf k8s.tar.gz
+          echo "Creating namespace if it doesn’t exist..."
+          sudo kubectl get ns employee-app || sudo kubectl create ns employee-app
+        
+          echo "Waiting a few seconds for namespace to be ready..."
+          sleep 5
+
+          echo "Applying all manifests..."
           sudo kubectl apply -f k8s/
+
+          echo "Deployment complete!"
+          sudo kubectl get pods -n employee-app
