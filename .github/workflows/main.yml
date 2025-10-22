@@ -11,13 +11,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-  
+# Configure AWS credentials
     - uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
-
+ # Login to ECR
     - uses: aws-actions/amazon-ecr-login@v1
 
     - name: Build and push backend
@@ -27,6 +27,7 @@ jobs:
         file: ./backend/Dockerfile
         push: true
         tags: ${{ secrets.ECR_BACKEND }}:latest
+        no-cache: true
 
     - name: Build and push frontend
       uses: docker/build-push-action@v5
@@ -47,16 +48,19 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+# SSH agent
     - uses: webfactory/ssh-agent@v0.6.0
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
+        
+# Replace image references in deployment manifests
     - name: Replace image references
       run: |
         sed -i "s|REPLACE_WITH_BACKEND_IMAGE|${{ secrets.ECR_BACKEND }}:latest|g" k8s/backend-deployment.yaml
         sed -i "s|REPLACE_WITH_FRONTEND_IMAGE|${{ secrets.ECR_FRONTEND }}:latest|g" k8s/frontend-deployment.yaml
         tar czf k8s.tar.gz k8s
-
+        
+# Copy manifests to EC2
     - uses: appleboy/scp-action@v0.1.6
       with:
         host: ${{ secrets.K3S_HOST }}
@@ -65,7 +69,8 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: k8s.tar.gz
         target: /home/ubuntu/
-
+        
+# Deploy to K3s via SSH
     - uses: appleboy/ssh-action@v0.1.8
       with:
         host: ${{ secrets.K3S_HOST }}
@@ -90,6 +95,10 @@ jobs:
 
           echo "Applying all manifests..."
           sudo kubectl apply -f k8s/
+
+          echo "---- Restarting frontend & backend pods ----"
+          sudo kubectl rollout restart deployment employee-frontend -n employee-app
+          sudo kubectl rollout restart deployment employee-backend -n employee-app
 
           echo "Deployment complete!"
           sudo kubectl get pods -n employee-app
