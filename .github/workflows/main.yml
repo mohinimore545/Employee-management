@@ -36,7 +36,7 @@ jobs:
         file: ./frontend/Dockerfile
         push: true
         build-args: |
-          REACT_APP_API_URL=${{ secrets.BACKEND_URL }}
+          REACT_APP_API_URL=http://backend.employee-app.svc.cluster.local:8080
         tags: ${{ secrets.ECR_FRONTEND }}:latest
         cache-from: type=registry,ref=${{ secrets.ECR_FRONTEND }}:latest
         no-cache: true
