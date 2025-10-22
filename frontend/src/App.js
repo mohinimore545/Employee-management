@@ -76,7 +76,7 @@ function App() {
                 <Table sx={{maxWidth: 600}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="right">Employee Address</TableCell>
+                            <TableCell align="right">Employee Name</TableCell>
                             <TableCell align="right">Employee Id</TableCell>
                         </TableRow>
                     </TableHead>
