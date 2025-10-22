@@ -13,6 +13,8 @@ spec:
       labels:
         app: backend
     spec:
+      imagePullSecrets:
+      - name: regcred
       containers:
       - name: backend
         image: 024848473432.dkr.ecr.ap-south-1.amazonaws.com/employee-management-backend:latest
