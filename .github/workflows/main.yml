@@ -38,6 +38,7 @@ jobs:
           REACT_APP_API_URL=${{ secrets.BACKEND_URL }}
         tags: ${{ secrets.ECR_FRONTEND }}:latest
         cache-from: type=registry,ref=${{ secrets.ECR_FRONTEND }}:latest
+        no-cache: true
 
   deploy:
     runs-on: ubuntu-latest
