@@ -10,8 +10,7 @@ ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
 
 # Build React app with environment variable
-RUN echo "Building frontend with API URL: $REACT_APP_API_URL" && \
-    npm run build
+RUN npm run build
 
 # Stage 2: Serve
 FROM nginx:stable-alpine
