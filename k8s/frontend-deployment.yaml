@@ -23,7 +23,7 @@ spec:
         - containerPort: 80
         env:
         - name: REACT_APP_SERVER_URL 
-          value: http://backend.employee-app.svc.cluster.local:8080/employees
+          value: http://65.1.124.134:30081/employees
 ---
 apiVersion: v1
 kind: Service
